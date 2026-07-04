@@ -14,6 +14,15 @@ import {
   Landmark,
 } from 'lucide-react';
 
+const formatTime12h = (time24) => {
+  if (!time24) return '';
+  const [hourStr, minStr] = time24.split(':');
+  const hour = parseInt(hourStr, 10);
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const hour12 = hour % 12 || 12;
+  return `${hour12}:${minStr} ${ampm}`;
+};
+
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('reservations');
   const [stats, setStats] = useState({
@@ -379,8 +388,8 @@ export default function AdminDashboard() {
                           <span className="font-bold text-slate-300">Table {booking.table?.tableNumber || 'Deleted'}</span>
                         </td>
                         <td className="px-6 py-4 text-slate-300">{formatDate(booking.reservationDate)}</td>
-                        <td className="px-6 py-4 font-medium text-slate-300">{booking.startTime} - {booking.endTime}</td>
-                        <td className="px-6 py-4 text-slate-300">{booking.numberOfGuests} pax</td>
+                        <td className="px-6 py-4 font-medium text-slate-300">{formatTime12h(booking.startTime)} - {formatTime12h(booking.endTime)}</td>
+                        <td className="px-6 py-4 text-slate-300">{booking.numberOfGuests} Guests</td>
                         <td className="px-6 py-4">
                           <span className={`px-2 py-0.5 text-xs font-semibold rounded-full border ${
                             booking.status === 'CONFIRMED'

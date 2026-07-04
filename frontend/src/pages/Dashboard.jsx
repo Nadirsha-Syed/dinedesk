@@ -13,12 +13,29 @@ const bookingSchema = z.object({
   numberOfGuests: z.number().int().min(1, 'Must be at least 1 guest.'),
 });
 
+const formatTime12h = (time24) => {
+  if (!time24) return '';
+  const [hourStr, minStr] = time24.split(':');
+  const hour = parseInt(hourStr, 10);
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const hour12 = hour % 12 || 12;
+  return `${hour12}:${minStr} ${ampm}`;
+};
+
 const timeSlots = [];
 for (let hour = 11; hour <= 22; hour++) {
   const pad = (num) => String(num).padStart(2, '0');
-  timeSlots.push(`${pad(hour)}:00`);
+  const addSlot = (h, m) => {
+    const value = `${pad(h)}:${pad(m)}`;
+    const displayHour = h % 12 || 12;
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    const label = `${displayHour}:${pad(m)} ${ampm}`;
+    timeSlots.push({ value, label });
+  };
+
+  addSlot(hour, 0);
   if (hour < 22) {
-    timeSlots.push(`${pad(hour)}:30`);
+    addSlot(hour, 30);
   }
 }
 
@@ -163,7 +180,7 @@ export default function Dashboard() {
                   className="w-full bg-slate-950 border border-slate-800 focus:border-violet-500 text-white px-3 py-2.5 rounded-lg focus:outline-none transition text-sm"
                 >
                   {timeSlots.map((slot) => (
-                    <option key={slot} value={slot}>{slot}</option>
+                    <option key={slot.value} value={slot.value}>{slot.label}</option>
                   ))}
                 </select>
               </div>
@@ -178,7 +195,7 @@ export default function Dashboard() {
                   className="w-full bg-slate-950 border border-slate-800 focus:border-violet-500 text-white px-3 py-2.5 rounded-lg focus:outline-none transition text-sm"
                 >
                   {timeSlots.map((slot) => (
-                    <option key={slot} value={slot}>{slot}</option>
+                    <option key={slot.value} value={slot.value}>{slot.label}</option>
                   ))}
                 </select>
               </div>
@@ -241,7 +258,7 @@ export default function Dashboard() {
                       </div>
                       <div className="flex flex-wrap gap-x-4 gap-y-1 text-slate-400 text-sm">
                         <span className="flex items-center space-x-1"><Calendar className="h-4 w-4" /> <span>{formatDate(booking.reservationDate)}</span></span>
-                        <span className="flex items-center space-x-1"><Clock className="h-4 w-4" /> <span>{booking.startTime} - {booking.endTime}</span></span>
+                        <span className="flex items-center space-x-1"><Clock className="h-4 w-4" /> <span>{formatTime12h(booking.startTime)} - {formatTime12h(booking.endTime)}</span></span>
                         <span className="flex items-center space-x-1"><Users className="h-4 w-4" /> <span>{booking.numberOfGuests} Guests</span></span>
                       </div>
                     </div>
@@ -287,7 +304,7 @@ export default function Dashboard() {
                       </div>
                       <div className="flex flex-wrap gap-x-4 gap-y-1 text-slate-500 text-xs">
                         <span>{formatDate(booking.reservationDate)}</span>
-                        <span>{booking.startTime} - {booking.endTime}</span>
+                        <span>{formatTime12h(booking.startTime)} - {formatTime12h(booking.endTime)}</span>
                         <span>{booking.numberOfGuests} Guests</span>
                       </div>
                     </div>
