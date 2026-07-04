@@ -11,6 +11,7 @@ import { ApiResponse } from './utils/apiResponse.js';
 import authRoutes from './routes/auth.routes.js';
 import tableRoutes from './routes/table.routes.js';
 import reservationRoutes from './routes/reservation.routes.js';
+import adminRoutes from './routes/admin.routes.js';
 
 const app = express();
 
@@ -55,6 +56,7 @@ app.get('/health', (req, res) => {
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/tables', tableRoutes);
 app.use('/api/v1/reservations', reservationRoutes);
+app.use('/api/v1/admin', adminRoutes);
 
 app.get('/', (req, res) => {
   return ApiResponse.success(res, null, 'Welcome to DineDesk API');
