@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, Users, Clock } from 'lucide-react';
+import { AuthContext } from '../contexts/AuthContext';
 
 export default function Home() {
+  const { user } = useContext(AuthContext);
+
   return (
     <div className="space-y-16 py-8">
       {/* Hero Section */}
@@ -14,18 +17,29 @@ export default function Home() {
           Secure your table at the city's premier culinary destination. Real-time availability, instant confirmations, and seamless reservation management.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-          <Link
-            to="/register"
-            className="w-full sm:w-auto px-8 py-3 rounded-lg bg-violet-650 hover:bg-violet-600 text-white font-semibold shadow-lg shadow-violet-900/30 transition duration-200 text-center"
-          >
-            Get Started
-          </Link>
-          <Link
-            to="/login"
-            className="w-full sm:w-auto px-8 py-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 hover:border-slate-700 font-semibold transition duration-200 text-center"
-          >
-            Sign In
-          </Link>
+          {user ? (
+            <Link
+              to={user.role === 'admin' ? '/admin/dashboard' : '/dashboard'}
+              className="w-full sm:w-auto px-8 py-3 rounded-lg bg-violet-650 hover:bg-violet-600 text-white font-semibold shadow-lg shadow-violet-900/30 transition duration-200 text-center"
+            >
+              Go to Dashboard
+            </Link>
+          ) : (
+            <>
+              <Link
+                to="/register"
+                className="w-full sm:w-auto px-8 py-3 rounded-lg bg-violet-650 hover:bg-violet-600 text-white font-semibold shadow-lg shadow-violet-900/30 transition duration-200 text-center"
+              >
+                Get Started
+              </Link>
+              <Link
+                to="/login"
+                className="w-full sm:w-auto px-8 py-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 hover:border-slate-700 font-semibold transition duration-200 text-center"
+              >
+                Sign In
+              </Link>
+            </>
+          )}
         </div>
       </section>
 
