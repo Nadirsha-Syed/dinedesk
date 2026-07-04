@@ -1,18 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { User, LogOut, Menu, X, Landmark } from 'lucide-react';
+import { AuthContext } from '../contexts/AuthContext';
 
 export default function BaseLayout() {
   const [isOpen, setIsOpen] = React.useState(false);
-
-  // Retrieve user payload from storage (mock for M1, wired in M2)
-  const storedUser = localStorage.getItem('user');
-  const user = storedUser ? JSON.parse(storedUser) : null;
+  const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    logout();
     navigate('/login');
   };
 
@@ -114,7 +111,7 @@ export default function BaseLayout() {
                     setIsOpen(false);
                     handleLogout();
                   }}
-                  className="w-full flex items-center justify-center space-x-1.5 bg-red-650/10 hover:bg-red-600/20 text-red-400 px-3.5 py-2.5 rounded-md text-base font-semibold transition border border-red-500/20"
+                  className="w-full flex items-center justify-center space-x-1.5 bg-red-650/10 hover:bg-red-600/20 text-red-450 px-3.5 py-2.5 rounded-md text-base font-semibold transition border border-red-500/20"
                 >
                   <LogOut className="h-5 w-5" />
                   <span>Logout</span>

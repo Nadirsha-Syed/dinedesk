@@ -5,18 +5,9 @@ import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Dashboard from '../pages/Dashboard';
+import AdminDashboard from '../pages/AdminDashboard';
 import ProtectedRoute from './ProtectedRoute';
 import AdminRoute from './AdminRoute';
-
-// Temporary AdminDashboard placeholder for routing resolution in M2
-const AdminDashboardPlaceholder = () => (
-  <div className="bg-slate-905 border border-slate-900 p-8 rounded-2xl space-y-6">
-    <h2 className="text-2xl font-bold text-violet-400">Admin Control Panel</h2>
-    <p className="text-slate-400 text-sm">
-      Admin dashboard statistics and restaurant table manager views will be fully implemented in Milestone 5.
-    </p>
-  </div>
-);
 
 export const router = createBrowserRouter([
   {
@@ -51,7 +42,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: 'admin/dashboard',
-            element: <AdminDashboardPlaceholder />,
+            element: <AdminDashboard />,
           },
         ],
       },
