@@ -8,6 +8,7 @@ import { env } from './config/env.js';
 import { ApiError } from './errors/ApiError.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { ApiResponse } from './utils/apiResponse.js';
+import authRoutes from './routes/auth.routes.js';
 
 const app = express();
 
@@ -47,6 +48,9 @@ if (env.NODE_ENV === 'development') {
 app.get('/health', (req, res) => {
   return ApiResponse.success(res, { uptime: process.uptime() }, 'DineDesk API is healthy');
 });
+
+// Routes configuration
+app.use('/api/v1/auth', authRoutes);
 
 app.get('/', (req, res) => {
   return ApiResponse.success(res, null, 'Welcome to DineDesk API');
