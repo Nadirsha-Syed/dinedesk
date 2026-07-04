@@ -9,6 +9,7 @@ import { ApiError } from './errors/ApiError.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { ApiResponse } from './utils/apiResponse.js';
 import authRoutes from './routes/auth.routes.js';
+import tableRoutes from './routes/table.routes.js';
 
 const app = express();
 
@@ -51,6 +52,7 @@ app.get('/health', (req, res) => {
 
 // Routes configuration
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/tables', tableRoutes);
 
 app.get('/', (req, res) => {
   return ApiResponse.success(res, null, 'Welcome to DineDesk API');
